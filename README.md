@@ -21,7 +21,15 @@ And if this doesn't appear then **install tree** on your system , by running thi
 ```
 sudo apt install tree  
 ```
-## 1. Creating index file
+Now again try the same command `tree ca`
+___
+## 2. Making the private named directory ,private
+>  chmod 700 Protects a file against any access from other users, while the issuing user still has full access.
+```
+chmod -v 700 ca/{root-ca,sub-ca,server}/private
+```
+<img src="./images/Screenshot%20from%202022-05-05%2000-26-28.png" alt="drawing" width="1000"/>
 
-
-
+## 2. Creating index file
+The index file will be only needed to *root-ca* amd *sub-ca*. The sub-ca
+ 
