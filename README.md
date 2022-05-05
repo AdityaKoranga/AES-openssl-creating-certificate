@@ -53,4 +53,18 @@ openssl rand -hex 16 > ca/sub-ca/serial
  Now you will be asked to enter a pass phrase which is a part of our encryption . So type a solid pass phrase and don't forget it as it will be used further too. Then press enter and rewrite again to verify.
  * this will look something like this :
 <img src="./images/privateroot_ca.png" alt="drawing" width="900"/>
-  
+>4096 is the length of bits of the private key of root-ca.
+
+Again follow the same step for making the private-key for sub-ca.
+```
+openssl genrsa -aes256 -out sub-ca/private/sub-ca.key 4096
+ ```
+Now we will do the same for server key but this time we will take key size of 2048 bits and we don't want any encryption system also.
+>This is because the server will be dealing with the encrypted data all the time , so for reducing the load we'll be taking key of less size and we don't want to enter the pass phrase whenever the server starts, so we will not use AES encyption this time .
+```
+openssl genrsa -out server/private/server.key 2048
+```
+## 6. Time for **public key**
+*public key* is going to be generated from *private key*.
+
+
