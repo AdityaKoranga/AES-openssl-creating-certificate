@@ -1,4 +1,4 @@
-# AES-openssl-creating-certificate
+# AES256-openssl-creating-certificate
 
 ## 1. Creating directory CA with Sub-CA and Root-CA
 
@@ -15,7 +15,7 @@ mkdir -p ca/{root-ca,sub-ca,server}/{private,certs,newcerts,crll,csr}
 ___
 Now if you will now run:  **`tree ca`** , then you will be able to see a structure like this:
 <!-- ![image1](./images/Screenshot%20from%202022-05-02%2000-31-46.png) -->
-<img src="./images/Screenshot%20from%202022-05-02%2000-31-46.png" alt="drawing" width="300"/>
+<img src="./images/tree1.png" alt="drawing" width="300"/>
 
 And if this doesn't appear then **install tree** on your system , by running this command: 
 ```
@@ -28,7 +28,7 @@ ___
 ```
 chmod -v 700 ca/{root-ca,sub-ca,server}/private
 ```
-<img src="./images/Screenshot%20from%202022-05-05%2000-26-28.png" alt="drawing" width="600"/>
+<img src="./images/chmod.png" alt="drawing" width="600"/>
 
 ## 3. Creating index file
 The index file will be only needed to *root-ca* and *sub-ca*. The sub-ca is intermediate certificate authority authorized by the parent root.
@@ -43,5 +43,14 @@ openssl rand -hex 16 > ca/sub-ca/serial
 ```
  > Again run `tree ca` to see the structure of files.
 
- > The public key of a server would be signed by a trusted certificate auhtority to have a trusted relationship with it and we would automatically as his clients trust any server that have been signed with the trusted key.
- ##
+ > The public key of a server would be signed by a trusted certificate auhtority to have a trusted relationship with it and as his clients we would automatically trust any server that have been signed with the trusted key.
+ ## 5. Time to create **private key** for **root-ca** and we'll use **AES256** for encryption.
+ >AES algorithm is considered to be quite safe.
+ ```
+ cd ca
+ openssl genrsa -aes256 -out root-ca/private/ca.key 4096
+ ```
+ Now you will be asked to enter a pass phrase which is a part of our encryption . So type a solid pass phrase and don't forget it as it will be used further too. Then press enter and rewrite again to verify.
+ * this will look something like this :
+<img src="./images/privateroot_ca.png" alt="drawing" width="900"/>
+  
