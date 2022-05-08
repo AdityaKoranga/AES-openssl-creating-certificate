@@ -405,4 +405,68 @@ cat server.crt ../../sub-ca/certs/sub-ca.crt > chained.crt
 ```
 cd ..
 ```
+## 14. Time to check the testing of the **server certs**
+Run this command and make sure to write the common name , the name that we added in the certificate.
+```
+sudo -- sh -c "echo "127.0.0.2 www.ubuntu.com"  >> /etc/hosts"
+```
+and then ping the give common name i.e. in  my case www.ubuntu.com
+```
+ping www.ubuntu.com
+```
+<img src="./images/testing.png" alt="drawing" width="900"/>
+We can actually test this through simple web service For which we will use make a duplicate terminal .
+
+```
+sudo openssl s_server -accept 443 -www -key private/server.key -cert certs/server.crt -CAfile ../sub-ca/certs/sub-ca.crt
+```
+which will then show this:
+
+<img src="./images/testing-simple.png" alt="drawing" width="800"/>
+
+So, now we have our **listening server** .
+
+Now on the other duplicate terminal we will make a web request. 
+Firstly check the last window after applying this code.
+> IN THE DUPLICATE TERMINAL FIRSTLY USE THIS COMMAND `cd` for changing the directory.
+  ```
+ cd
+ ```
+
+```
+ss -ntl
+```
+it will be listening at port 443 
+
+<img src="./images/port.png" alt="drawing" width="1000"/>
+
+then use curl client to make web request. 
+```
+curl https:www.ubuntu.com
+```
+which will give output
+
+<img src="./images/curl.png" alt="drawing" width="600"/>
+
+and is it gives error then firstly try copy the `root-ca.crt` into `/etc/pki/wupd/LVFS-CA.pem` .. well after pki the files depend on the system. 
+like this:
+```
+sudo cp ca/root-ca/certs/ca.crt /etc/pki/fwupd/LVFS-CA.pem
+```
+and then do the update of certificate like this:
+```
+sudo update-ca-certificates -v
+```
+and then do the `curl` command and the output will be the same.
+
+> Hence , we can say that it is working.
+
+ Everything is done now , close all of the terminals.
+ 
+ This is how certificate authority is set up and certificates are made.
+
+
+
+
+
 
