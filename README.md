@@ -64,8 +64,8 @@ Now we will do the same for server key but this time we will take key size of 20
 ```
 openssl genrsa -out server/private/server.key 2048
 ```
-## 6. Time for **public key** and **root certificate authority**
-*public key* is going to be generated from *private key*.
+## 6. Time for **root certificate authority**
+
 >For this purpose we will need a configuration file which will avoid our time from writing every information on the command line. So follow the following steps:
 ```
 vim root-ca/root-ca.conf
@@ -189,6 +189,16 @@ and then run this command for making new x509 certificate (with the help of the 
 openssl req -config root-ca.conf -key private/ca.key -new -x509 -days 100 -sha256 -extensions v3_ca -out certs/ca.crt
 ```
 <img src="./images/root_cert.png" alt="drawing" width="1600"/>
+Enter the passphrase and in the names field you can write anything or u can just press enter and it will taked the name that are used in default. Write RootCA in common name.
+
+## 7. Time to check the root-ca certificate that we just created.
+```
+openssl x509 -noout -in certs/ca.crt -text
+```
+> -text form so that we can read some of the things
+
+<img src="./images/root-crt-text.png" alt="drawing" width="500"/>
+
 
 
 
