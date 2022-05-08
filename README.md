@@ -70,7 +70,7 @@ openssl genrsa -out server/private/server.key 2048
 ```
 vim root-ca/root-ca.conf
 ```
-Now copy paste the following configurations in that config file.
+Now copy paste the following configurations in that config file and save it.
 ```
 
 [ca]
@@ -178,6 +178,19 @@ The main things that are present in that config file are:
 * Email
 * Some default names
 * Extension v3_ca is for root-ca.
+
+Now move into the root-ca directory
+```
+cd root-ca/
+```
+and then run this command for making new x509 certificate (with the help of the private key) and you can provide the number days you want the certificate for.
+>We will be using SHA256 for making the message digest and the number of days is all upto you (in this I have taken 100 days)
+```
+openssl req -config root-ca.conf -key private/ca.key -new -x509 -days 100 -sha256 -extensions v3_ca -out certs/ca.crt
+```
+<img src="./images/root_cert.png" alt="drawing" width="1000"/>
+
+
 
 
 
