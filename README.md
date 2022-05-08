@@ -71,15 +71,20 @@ openssl genrsa -out server/private/server.key 2048
 vim root-ca/root-ca.conf
 ```
 Now copy paste the following configurations in that config file and save it.
+> **KEEP IN MIND TO PUT THE PATH OF THE DIRECTORY IN THE `CA_DEFAULT` ACCORDING TO YOUR SYSTEM.**
+> <img src="./images/keep_in_mind.png" alt="drawing" width="300"/>
+> 
+> this dir should contain the path that is according to your system. 
 ```
 
 [ca]
-#/root/ca/root-ca/root-ca.conf
+#/home/ubuntu/ca/root-ca/root-ca.conf
+#enter your path (the above one is the path of my system)
 #see man ca
 default_ca    = CA_default
 
 [CA_default]
-dir     = /root/ca/root-ca
+dir     = /home/ubuntu/ca/root-ca
 certs     =  $dir/certs
 crl_dir    = $dir/crl
 new_certs_dir   = $dir/newcerts
@@ -216,13 +221,14 @@ cd ../sub-ca/
 vim sub-ca.conf
 ```
 Now copy paste the whole code in this config file.
+> **KEEP IN MIND TO PUT THE PATH OF THE DIRECTORY IN THE `CA_DEFAULT` ACCORDING TO YOUR SYSTEM.**
 ```
 [ca]
 #see man ca
 default_ca    = CA_default
 
 [CA_default]
-dir     = /root/ca/sub-ca
+dir     = /home/ubuntu/ca/sub-ca
 certs     =  $dir/certs
 crl_dir    = $dir/crl
 new_certs_dir   = $dir/newcerts
@@ -322,6 +328,21 @@ Like enter the pass phrase press enter-enter and this time on *common name* type
 
 <img src="./images/subca-conf.png" alt="drawing" width="2000"/>
 
+## 9. **Root-CA** will sign the certificate now
+
+Go back to the **root-ca** directory
+```
+cd -
+```
+Now create the certificate:
+```
+openssl ca -config root-ca.conf -extensions v3_intermediate_ca -days 100 -notext -in ../sub-ca/csr/sub-ca.csr -out ../sub-ca/certs/sub-ca.crt
+```
+>If this somehow gives error then you haven't put the correct path of the directory in the `CA_DEFAULT` inside the config file.
+
+After running the code enter the pass phrase and then type 'y' and 'y' in the following choices that will appear and then your certificate is successfully created.
+
+<img src="./images/sub-ca-cert.png" alt="drawing" width="1500"/>
 
 
 
