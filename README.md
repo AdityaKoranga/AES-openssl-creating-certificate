@@ -394,6 +394,11 @@ ls newcerts
 
 Now we might also depend on server with which we are going to use the certificate server.crt for which we need a chained certificate file that contains full copy of the signing authority and the server.crt 
 
+change the directory
+```
+cd ../server/certs/
+```
+Make the chained certificate
 ```
 cat server.crt ../../sub-ca/certs/sub-ca.crt > chained.crt
 ```
