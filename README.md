@@ -64,7 +64,8 @@ Now we will do the same for server key but this time we will take key size of 20
 ```
 openssl genrsa -out server/private/server.key 2048
 ```
-## 6. Time for **root certificate authority**
+## 6. Time for **public key** and **root certificate authority**
+>public key will be created within the process.
 
 >For this purpose we will need a configuration file which will avoid our time from writing every information on the command line. So follow the following steps:
 ```
@@ -344,13 +345,59 @@ After running the code enter the pass phrase and then type 'y' and 'y' in the fo
 
 <img src="./images/sub-ca-cert.png" alt="drawing" width="1500"/>
 
+Now again run the `tree` command to see the structure and this time you will notice something different
+```
+tree ../../ca
+```
+## 10. Check the index file and notice the serial number
+```
+cat index
+```
+<img src="./images/index.png" alt="drawing" width="1000"/>
+Now check the certificate that we just created.
 
+```
+openssl x509 -noout -text -in ../sub-ca/certs/sub-ca.crt
+```
+<img src="./images/sub-ca-cert-check.png" alt="drawing" width="600"/>
 
+## 11. Now's the time for **server** directory.
 
+Change the directory
+```
+cd ../server/
+```
+Generate the signing request
+```
+openssl req -key private/server.key -new -sha256 -out csr/server.csr
+```
 
+<img src="./images/server-csr-req.png" alt="drawing" width="700"/>
 
+>You can press enter in every field if you wish but give any name or link in Common Name section.
 
+## 12. Now Sub-CA will sign the certificate.
+```
+cd ../sub-ca
+```
+Then run this command for making the certificate
+```
+openssl ca -config sub-ca.conf -extensions server_cert -days 100 -notext -in ../server/csr/server.csr -out ../server/certs/server.crt
+```
+Then follow the same steps that we did while making the certificate for sub-ca
 
+Now check the backup copy of the certificate that we issued
+```
+ls newcerts
+```
+## 13. Chained Certificate
 
+Now we might also depend on server with which we are going to use the certificate server.crt for which we need a chained certificate file that contains full copy of the signing authority and the server.crt 
 
+```
+cat server.crt ../../sub-ca/certs/sub-ca.crt > chained.crt
+```
+```
+cd ..
+```
 
