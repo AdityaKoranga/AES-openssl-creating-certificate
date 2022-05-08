@@ -188,7 +188,7 @@ and then run this command for making new x509 certificate (with the help of the 
 ```
 openssl req -config root-ca.conf -key private/ca.key -new -x509 -days 100 -sha256 -extensions v3_ca -out certs/ca.crt
 ```
-<img src="./images/root_cert.png" alt="drawing" width="1000"/>
+<img src="./images/root_cert.png" alt="drawing" width="1600"/>
 
 
 
